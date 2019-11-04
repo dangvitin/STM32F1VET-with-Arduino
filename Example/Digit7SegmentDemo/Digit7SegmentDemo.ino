@@ -7,7 +7,7 @@
    6 to CS,
    5 to CLK */
 #define DIN PB10
-#define CS PC4
+#define CS PB8
 #define CLK PB11
 
 DigitLedDisplay ld = DigitLedDisplay(DIN, CS, CLK);

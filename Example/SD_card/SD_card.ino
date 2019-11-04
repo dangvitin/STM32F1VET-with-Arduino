@@ -1,62 +1,79 @@
+/*
+  SD card read/write
+
+ This example shows how to read and write data to and from an SD card file
+ The circuit:
+ * SD card attached to SPI bus as follows:
+ ** MOSI - pin 11
+ ** MISO - pin 12
+ ** CLK - pin 13
+ ** CS - pin 4 (for MKRZero SD: SDCARD_SS_PIN)
+
+ created   Nov 2010
+ by David A. Mellis
+ modified 9 Apr 2012
+ by Tom Igoe
+
+ This example code is in the public domain.
+
+ */
+
 #include <SPI.h>
 #include <SD.h>
-// Tham khảo thêm các hàm chức năng ở 
-// https://www.arduino.cc/en/Reference/SD
 
 File myFile;
 void setup() {
-  // Thiết lập giao tiếp Serial
+
+  *(uint32_t*)(0x40010004) |= 0x4000000; //Remap pin
+  
+  // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ;
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.print("Khởi tạo SD card...");
 
-  if (!SD.begin(PC4)) {
-    Serial.println("Khởi tạo thất bại !");
-    while (1);
+  Serial.print("Initializing SD card...");
+
+  while (!SD.begin(PC5)) {
+    Serial.println("initialization failed!");
+    delay(1000);
   }
-  Serial.println("Khởi tại thành công !");
+  Serial.println("initialization done.");
 
-  // Mở file, chỉ mở được 1 file trong 1 thời điểm, nếu không có file để mở thì
-  // sẽ tạo ra file tương ứng
-  // Ở đây file mở tên là 'test.txt', nếu file không tồn tại thì tạo file 'test.txt'
-
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
   myFile = SD.open("test.txt", FILE_WRITE);
 
-  // Nếu mở file thành công
+  // if the file opened okay, write to it:
   if (myFile) {
-    myFile.println("Chao mung den voi");
-    myFile.println("Cau lac bo Dien Tu !!!");
-
-    // Sau khi ghi xong tiến hành đóng file lại
+    Serial.print("Writing to test.txt...");
+    myFile.println("testing 1, 2, 3.");
+    // close the file:
     myFile.close();
-    Serial.println("Đã ghi xong.");
+    Serial.println("done.");
   } else {
-    // Nếu gặp lỗi khi mở file thì in ra màn hình
-    Serial.println("Lỗi khi mở file");
+    // if the file didn't open, print an error:
+    Serial.println("error opening test.txt");
   }
 
-  // Đọc file ///////////////////////////////////////////////
-
-  // Mở file để đọc
+  // re-open the file for reading:
   myFile = SD.open("test.txt");
   if (myFile) {
-    Serial.println("Đang mở file...");
-    Serial.println("****** Nội dung file ******");
-    // Đọc toàn bộ chữ trong file
+    Serial.println("test.txt:");
+
+    // read from the file until there's nothing else in it:
     while (myFile.available()) {
       Serial.write(myFile.read());
     }
-    Serial.println("****** Kết thúc file ******");
-    // Đóng file lại sau khi đọc
+    // close the file:
     myFile.close();
   } else {
     // if the file didn't open, print an error:
-    Serial.println("Lỗi khi mở file.");
+    Serial.println("error opening test.txt");
   }
 }
 
 void loop() {
+  // nothing happens after setup
 }

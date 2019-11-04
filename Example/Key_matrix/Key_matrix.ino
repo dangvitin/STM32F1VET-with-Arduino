@@ -11,8 +11,8 @@ char keys[ROWS][COLS] = {
   {'*', '0', '#', 'D'}
 };
 
-byte rowPins[ROWS] = {PD11, PD10, PD9, PD8}; // Kết nối Arduino với 4 hàng của bàn phím
-byte colPins[COLS] = {PE12, PE13, PE14, PE15}; //    Kết nối Arduino với 4 cột của bàn phím
+byte rowPins[ROWS] = {PC0, PC1, PC2, PC3}; // Kết nối Arduino với 4 hàng của bàn phím
+byte colPins[COLS] = {PA1, PA2, PA3, PA4}; //    Kết nối Arduino với 4 cột của bàn phím
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS ); // Khởi tạo bàn phím từ các thiết lập trên
 

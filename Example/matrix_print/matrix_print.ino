@@ -16,9 +16,9 @@
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW
 #define MAX_DEVICES 4
 
-#define CLK_PIN   PE0  // or SCK
-#define DATA_PIN  PE1  // or MOSI
-#define CS_PIN    PB9  // or SS
+#define CLK_PIN   PB11  // or SCK
+#define DATA_PIN  PB10  // or MOSI
+#define CS_PIN    PB9 // or SS
 
 // SPI hardware interface
 //MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
@@ -30,7 +30,7 @@ MD_MAX72XX mx = MD_MAX72XX(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES
 
 // Global message buffers shared by Serial and Scrolling functions
 #define BUF_SIZE  75
-char message[BUF_SIZE] = {"Hello!"};
+char message[BUF_SIZE] = {"Hello !!!"};
 bool newMessageAvailable = true;
 
 void readSerial(void)
